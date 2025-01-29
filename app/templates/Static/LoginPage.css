@@ -1,0 +1,10 @@
+.H2{
+    display: flex;
+    padding-left: 10px;
+    justify-content: center;
+}
+
+.span{
+    border: 1px solid black;
+    background-color: lime;
+  }
