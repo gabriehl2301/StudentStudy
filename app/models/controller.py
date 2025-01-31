@@ -3,7 +3,7 @@ import os
 
 def hash_password(password: str) -> str: 
     salt = os.urandom(16) # Generate a 16byte salt 
-    pwd_hash = hashlib.pbkdf2_hmac("sha256", password.encode({"utf-8"}), salt, 100000)
+    pwd_hash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, 100000)
     pwd_hash = salt + pwd_hash #Prepend the salt to the hash for storgae 
     return pwd_hash.hex()
 

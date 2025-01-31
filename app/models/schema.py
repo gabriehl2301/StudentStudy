@@ -27,3 +27,15 @@ class Task(db.Model):
 
 # Add a relationship to the User model
 User.tasks = orm.relationship("Task", back_populates="user")
+
+class Log(db.Model):
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True, autoincrement=True)
+    user_id: orm.Mapped[int] = orm.mapped_column(sqla.ForeignKey("user.id"), nullable=False)
+    action: orm.Mapped[str] = orm.mapped_column(sqla.String(255), nullable=False)
+    timestamp: orm.Mapped[datetime] = orm.mapped_column(default=datetime.now(timezone.utc))
+
+    # Relationships
+    user: orm.Mapped["User"] = orm.relationship(back_populates="logs")
+
+# Add a relationship to the User model
+User.logs = orm.relationship("Log", back_populates="user")
