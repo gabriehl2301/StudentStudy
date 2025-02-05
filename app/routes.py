@@ -5,30 +5,34 @@ from app import db
 from app.models.schema import User, Task
 from app.models.controller import hash_password, verify_password
 
-@app.route('/')
+@app.route('/',)
 def index():
     return redirect(url_for('login'))
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'],)
 def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
 
         user = User.query.filter_by(email=email).first()
-        if user and verify_password(user.password_hash, password):
+        print(user)
+        valid_password = verify_password(user.password_hash, password)
+        print(valid_password)
+        if user and valid_password:
             login_user(user)
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid email or password.', 'error')
 
-    return render_template('login.html')
+    return render_template('login.html', title="Student Study")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         email = request.form['email']
+        name = request.form['name']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
@@ -42,7 +46,7 @@ def register():
             return redirect(url_for('register'))
 
         hashed_password = hash_password(password)
-        new_user = User(email=email, password_hash=hashed_password)
+        new_user = User(email=email, name=name, password_hash=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -82,5 +86,3 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
-
-

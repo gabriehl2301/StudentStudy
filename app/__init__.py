@@ -13,9 +13,9 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 moment =  Moment()
-#login = LoginManager(app=app)
-#login.login_view = "Learnt"
-#login.login_message = "You are not authorized to view this page"
+login = LoginManager(app=app)
+login.login_view = "Learnt"
+login.login_message = "You are not authorized to view this page"
 
 @app.shell_context_processor
 def make_admin_shell_context():

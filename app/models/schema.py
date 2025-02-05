@@ -14,6 +14,7 @@ class TaskStatus(StrEnum):
 class User(UserMixin, db.Model):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True, autoincrement=True)
     email: orm.Mapped[str] = orm.mapped_column(sqla.String(255), index=True, unique=True)
+    name: orm.Mapped[str] = orm.mapped_column(sqla.String(255), index=True)
     password_hash: orm.Mapped[Optional[str]] = orm.mapped_column(sqla.String(255))
 
 class Task(db.Model):
