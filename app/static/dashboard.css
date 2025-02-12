@@ -57,6 +57,9 @@ body {
     cursor: pointer;
 }
 
+.tasks li:hover {
+    background-color: #e9ecef;
+}
 .tasks li button:hover {
     background-color: #0056b3;
 }

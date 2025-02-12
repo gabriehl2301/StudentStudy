@@ -26,9 +26,9 @@
                                 {{ task.task_name }} - {{ task.status }}
                                 <form action="{{ url_for('update_task', task_id=task.id) }}" method="POST" class="d-flex">
                                     <select name="status" class="form-select me-2">
-                                        <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
-                                        <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
-                                        <option value="Complete" {% if task.status == 'Complete' %}selected{% endif %}>Complete</option>
+                                        <option value="{{task_statuses.Not_Started}}" {% if task.status == task_statuses.Not_Started %}selected{% endif %}>Not Started</option>
+                                        <option value="{{task_statuses.Active}}" {% if task.status == task_statuses.Active %}selected{% endif %}>In Progress</option>
+                                        <option value="{{task_statuses.Complete}}" {% if task.status == task_statuses.Complete %}selected{% endif %}>Complete</option>
                                     </select>
                                     <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                 </form>

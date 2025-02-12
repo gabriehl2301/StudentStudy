@@ -28,8 +28,17 @@ body {
 
 /* Form elements */
 .register-container input[type="email"],
-.register-container input[type="password"] {
-    width: 100%;
+.register-container input[type="password"]{
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.register-container input[type="text1"]{
+    width: 80%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;

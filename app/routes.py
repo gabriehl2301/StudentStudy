@@ -2,24 +2,26 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from app import db
-from app.models.schema import User, Task
+from app.models.schema import User, Task, TaskStatus
 from app.models.controller import hash_password, verify_password
 
-@app.route('/',)
-def index():
-    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'],)
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-
         user = User.query.filter_by(email=email).first()
-        print(user)
+        
+        if user is None:
+            flash('Invalid email or password.', 'error')
+            return redirect(url_for('login'))
         valid_password = verify_password(user.password_hash, password)
-        print(valid_password)
-        if user and valid_password:
+        
+        if valid_password:
             login_user(user)
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
@@ -56,16 +58,17 @@ def register():
     return render_template('register.html')
 
 @app.route('/dashboard')
+@app.route('/',)
 @login_required
 def dashboard():
     tasks = Task.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', tasks=tasks)
+    return render_template('dashboard.html', tasks=tasks, task_statuses=TaskStatus)
 
 @app.route('/add_task', methods=['POST'])
 @login_required
 def add_task():
     task_name = request.form['task_name']
-    new_task = Task(user_id=current_user.id, task_name=task_name, status='Not Started')
+    new_task = Task(user_id=current_user.id, task_name=task_name, status=TaskStatus.Not_Started)
     db.session.add(new_task)
     db.session.commit()
     flash('Task added successfully!', 'success')
@@ -75,7 +78,7 @@ def add_task():
 @login_required
 def update_task(task_id):
     task = Task.query.get_or_404(task_id)
-    task.status = request.form['status']
+    task.status = TaskStatus(request.form['status'])
     db.session.commit()
     flash('Task updated successfully!', 'success')
     return redirect(url_for('dashboard'))
