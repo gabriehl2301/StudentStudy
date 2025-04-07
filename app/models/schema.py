@@ -23,7 +23,10 @@ class Task(db.Model):
     user_id: orm.Mapped[int] = orm.mapped_column(sqla.ForeignKey("user.id"), nullable=False)
     task_name: orm.Mapped[str] = orm.mapped_column(sqla.String(200), nullable=False)
     status: orm.Mapped[TaskStatus] = orm.mapped_column(sqla.Enum(TaskStatus), default=TaskStatus.Active)
+    category: orm.Mapped[str] = orm.mapped_column(sqla.String(50), nullable=False) 
     created_at: orm.Mapped[datetime] = orm.mapped_column(default=datetime.now(timezone.utc))
+    start_date: orm.Mapped[Optional[datetime.date]] = orm.mapped_column(sqla.Date)
+    end_date: orm.Mapped[Optional[datetime.date]] = orm.mapped_column(sqla.Date)
 
     user: orm.Mapped["User"] = orm.relationship(back_populates="tasks")
 
@@ -41,3 +44,4 @@ class Log(db.Model):
 
 # Add a relationship to the User model
 User.logs = orm.relationship("Log", back_populates="user")
+

@@ -1,0 +1,203 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logout-btn {
+    align-self: flex-end;
+    background-color: #ffffff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.task-container {
+    width: 50%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#task-list {
+    margin-bottom: 15px;
+}
+
+.task {
+    display: flex;
+    align-items: flex-start;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 4px solid #007bff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.task-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-content label {
+    font-weight: bold;
+}
+
+.task-content p {
+    margin: 5px 0;
+    color: #6c757d;
+}
+
+.date {
+    font-size: 0.9em;
+    color: #007bff;
+}
+
+.task-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.add-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+/* Eisenhower Matrix Container */
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Matrix Row */
+.matrix-row {
+    display: flex;
+    gap: 10px;
+}
+
+/* Matrix Cell */
+.matrix-cell {
+    flex: 1; /* Each cell takes equal space */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.matrix-cell h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Task List */
+.task-list {
+    list-style-type: none;
+}
+
+.task-list li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.task-list li:last-child {
+    border-bottom: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Color Coding for Matrix Cells */
+.urgent-important {
+    background-color: #ffcccc; /* Light red for urgent & important */
+}
+
+.not-urgent-important {
+    background-color: #ccffcc; /* Light green for not urgent & important */
+}
+
+.urgent-not-important {
+    background-color: #ffebcc; /* Light orange for urgent & not important */
+}
+
+.not-urgent-not-important {
+    background-color: #ccccff; /* Light blue for not urgent & not important */
+}
+
+/* Gantt Chart */
+#ganttChart {
+    width: 100%;
+    height: 300px;
+}
+
+/* Timer */
+.timer {
+    text-align: center;
+}
+
+.time-display {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#startTimer, #resetTimer {
+    margin: 5px;
+}
+/* Scrollable task lists */
+.list-group {
+    max-height: 250px; /* Adjust for consistency */
+    overflow-y: auto;
+}
+
+/* Eisenhower Matrix scrollable lists */
+.task-list {
+    height: calc(5 * 1.5em + 10px); /* Limits to 3 items */
+    overflow-y: auto;
+    padding: 5px;
+    border-top: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Ensuring the main task card matches height */
+.card-body.overflow-auto {
+    min-height: 350px; /* Adjust this based on layout */
+}
+
+/* Scrollable Gantt Chart */
+.gantt-container {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
