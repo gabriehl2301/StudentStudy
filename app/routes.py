@@ -5,7 +5,7 @@ from app import db
 from app.models.schema import User, Task, TaskStatus
 from app.models.controller import hash_password, verify_password
 from datetime import datetime
-
+import re
 
 @app.route(
     "/",
@@ -41,30 +41,50 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        email = request.form["email"]
-        name = request.form["name"]
-        password = request.form["password"]
-        confirm_password = request.form["confirm_password"]
+        email = request.form.get("email", "").strip().lower()
+        name = request.form.get("name", "").strip()
+        password = request.form.get("password", "").strip()
+        confirm_password = request.form.get("confirm_password", "").strip()
 
+        # Validation checks (now with specific error messages)
+        errors = []
+        if not (2 <= len(name) <= 50) or not name.replace(" ", "").isalpha():
+            errors.append("Name must be 2-50 alphabetic characters")
+        if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
+            errors.append("Invalid email format")
+        if len(password) < 8 or not re.search(r"[A-Za-z]", password) or not re.search(r"\d", password):
+            errors.append("Password must be 8+ chars with 1 symbol and 1 number")
         if password != confirm_password:
-            flash("Passwords do not match.", "error")
+            errors.append("Passwords do not match")
+        if User.query.filter_by(email=email).first():
+            errors.append("Email already registered")
+
+        if errors:
+            for error in errors:
+                flash(error, "error")  # Use "error" category (like /login)
             return redirect(url_for("register"))
 
-        existing_user = User.query.filter_by(email=email).first()
-        if existing_user:
-            flash("Email already registered.", "error")
-            return redirect(url_for("register"))
-
+        # If valid, create user
         hashed_password = hash_password(password)
         new_user = User(email=email, name=name, password_hash=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Registration successful! Please log in.", "success")
+        flash("Registration successful! Please log in.", "success")  # "success" category
         return redirect(url_for("login"))
 
     return render_template("register.html")
 
+@app.route("/delete_task/<int:task_id>", methods=["POST"])
+@login_required
+def delete_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        abort(403)  # Authorization check
+    db.session.delete(task)
+    db.session.commit()
+    flash("Task deleted successfully!", "success")
+    return redirect(url_for("dashboard"))
 
 @app.route("/dashboard")
 @login_required
@@ -78,6 +98,9 @@ def dashboard():
         "category": task.category,
     } for task in tasks if task.start_date is not None and task.end_date is not None ]
     return render_template("dashboard.html", tasks=tasks, task_statuses=TaskStatus, chart_data=chart_data)
+   
+
+
 
 
 @app.route("/add_task", methods=["POST"])

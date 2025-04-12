@@ -2,6 +2,17 @@
 {% block content %}
 <div class="container">
     <h2 class="text-center mb-4">Welcome, {{ current_user.name }}</h2>
+  
+    <!-- Flash Messages -->
+   {% with messages = get_flashed_messages(with_categories=True) %}
+   {% if messages %}
+       <div class="flash-messages">
+           {% for category, message in messages %}
+               <div class="alert alert-{{ category }}">{{ message }}</div>
+           {% endfor %}
+       </div>
+   {% endif %}
+{% endwith %}
 
     <!-- Task Management Section -->
     <div class="row mb-4">
@@ -86,6 +97,14 @@
                                             </button>
                                         </form>
                                     {% endif %}
+                                    <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" 
+                                    onsubmit="return confirm('Are you sure you want to delete this task?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-dark" title="Delete task">
+                                     <i class="bi bi-trash">
+                                        
+                                     </i>
+                                    </button>
+    </form>
                                 </div>
                             </li>
                         {% endfor %}
@@ -153,7 +172,8 @@
                             <div class="matrix-cell {{ category }}">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h4>{{ title }}</h4>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ category }}">
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                     data-bs-target="#modal-{{ category }}">
                                         <i class="bi bi-plus-lg"></i>
                                     </button>
                                 </div>
